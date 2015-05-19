@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Domhnall O'Hanlon" />
+  <meta name="date" content="2015-02-10" />
+  <title>Hello C...TYI!</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Hello C...TYI!</h1>
+  <p class="author">
+Domhnall O'Hanlon
+  </p>
+  <p class="date">February 10, 2015</p>
+</div>
+<div class="slide section level2">
+
+<h3 id="part-1-input-process-output">Part 1: Input &gt; Process &gt; Output</h3>
+<p>In this secion you will write your first C programs, and learn about the differnt bits and pieces that are required to compile and run software written in C. By the end of this section you should be able to</p>
+<ul class="incremental">
+<li>Write a simple, interactive, exectuable program.</li>
+<li>Understand essential C syntax</li>
+<li>Be aware of different data types in C</li>
+</ul>
+<h3 id="hello-world">Hello World!</h3>
+<p>&quot;Hello World&quot; is typically the first program that students learn to write. It's origins are as old as C itself ... <a href="link"></a></p>
+<pre class="sourceCode c"><code class="sourceCode c">
+    <span class="ot">#include &lt;stdio.h&gt;</span>
+    <span class="ot">#include &lt;stdlib.h&gt;</span>
+
+    <span class="dt">int</span> main(){
+      printf(<span class="st">&quot;Hello World&quot;</span>);
+
+      <span class="kw">return</span> <span class="dv">0</span>;
+    }</code></pre>
+<p></p>
+<h3 id="comments">Comments</h3>
+<p>Single line comments</p>
+<pre class="sourceCode c"><code class="sourceCode c">    <span class="co">//this is a single line comment.</span></code></pre>
+<p>Multi line comments span two or more lines.</p>
+<pre class="sourceCode c"><code class="sourceCode c">    <span class="co">/*</span>
+<span class="co">    This is a </span>
+<span class="co">    multiline</span>
+<span class="co">    comment</span>
+<span class="co">    */</span></code></pre>
+<p></p>
+<h3 id="escape-characters">Escape Characters</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">sequence</th>
+<th align="left">output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>\a</code></td>
+<td align="left">alert</td>
+</tr>
+<tr class="even">
+<td align="left"><code>\n</code></td>
+<td align="left">new line</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>\t</code></td>
+<td align="left">tab</td>
+</tr>
+</tbody>
+</table>
+<p>Many More!</p>
+<h3 id="conversion-characters">Conversion Characters</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Data Type</th>
+<th align="left">Character</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">String</td>
+<td align="left">%s</td>
+</tr>
+<tr class="even">
+<td align="left">int</td>
+<td align="left">%d</td>
+</tr>
+<tr class="odd">
+<td align="left">float</td>
+<td align="left">%f</td>
+</tr>
+<tr class="even">
+<td align="left">pointer</td>
+<td align="left">%p</td>
+</tr>
+</tbody>
+</table>
+<p>It is also possible to output a specific number of digits from a float like so:</p>
+<pre class="sourceCode c"><code class="sourceCode c">  <span class="dt">int</span> main(){
+    printf(<span class="st">&quot;I ate some %f&quot;</span>, <span class="fl">3.141593</span>);
+    printf(<span class="st">&quot;I ate some %.4f&quot;</span>, <span class="fl">3.141593</span>);
+    printf(<span class="st">&quot;I ate some %.2f&quot;</span>, <span class="fl">3.141593</span>);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+  }</code></pre>
+<p></p>
+<h3 id="variables">Variables</h3>
+<p>A variable is simply a placeholder where we are going to store some information in the computer's memory. There are three things you need to do to create a variable in your program. First you need to tell the compiler what <strong>type</strong> of data you'll be working with - i.e. is it a number or letters etc. Then you need to <strong>name</strong> your variable, so that it can refer to it elsewhere in your code. Finally you need to give your variable a <strong>value</strong>. The following code snippet has improved the previous example by including variables:</p>
+<pre class="sourceCode c"><code class="sourceCode c">  <span class="dt">int</span> main(){
+
+    <span class="co">//declare a floating point variable and name it &quot;pi&quot;</span>
+    <span class="dt">float</span> pi;
+
+    <span class="co">//assign the pi variable a value of 3.141593</span>
+    pi = <span class="fl">3.141593</span>;
+
+    printf(<span class="st">&quot;I ate some %f&quot;</span>, pi);
+    printf(<span class="st">&quot;I ate some %.4f&quot;</span>, pi);
+    printf(<span class="st">&quot;I ate some %.2f&quot;</span>, pi);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+  }</code></pre>
+<p>To make your life easier you can <strong>declare</strong> and <strong>initialise</strong> a variable in one line like so:</p>
+<pre class="sourceCode c"><code class="sourceCode c">  <span class="dt">float</span> pi = <span class="fl">3.141593</span>;</code></pre>
+<p></p>
+<h3 id="arithmetic">Arithmetic</h3>
+<p>You will recall that a computer is defined as a machine that can perform arithmetic and logic operations. So far we've done neither, so we'll try a bit of arithmetic.</p>
+<pre class="sourceCode c"><code class="sourceCode c">  <span class="dt">int</span> main(){
+
+    <span class="co">//declare an integer variable</span>
+    <span class="dt">int</span> a = <span class="dv">7</span>;
+    
+    <span class="co">//return the int squared</span>
+    printf(a*a); 
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+  }</code></pre>
+<p>Great...let's try some more. You code will execute from top to bottom, so new values can be assigned &quot;on-the-fly&quot;:</p>
+<pre class="sourceCode c"><code class="sourceCode c">  <span class="dt">int</span> main(){
+
+    <span class="dt">int</span> currentYear = <span class="dv">2015</span>;
+    <span class="dt">int</span> zuckerBorn = <span class="dv">1984</span>;
+    <span class="dt">int</span> babyGates = <span class="dv">1955</span>;
+    <span class="dt">int</span> age;
+
+    <span class="co">//calculates how old Mark Zuckerberg is:</span>
+    age = currentYear - zuckerBorn;
+      printf(<span class="st">&quot;Mark Zuckerberg is %d years old </span><span class="ch">\n</span><span class="st">&quot;</span>, age);
+
+    <span class="co">//here we reuse the age variable to compute how old Bill Gates is.</span>
+    age = currentYear - babyGates;
+      printf(<span class="st">&quot;Bill Gates is %d years old </span><span class="ch">\n</span><span class="st">&quot;</span>, age);
+
+      <span class="kw">return</span> <span class="dv">0</span>;
+
+  }</code></pre>
+<p></p>
+<h3 id="types-of-variables">Types of Variables:</h3>
+<h4 id="integer-types">Integer Types</h4>
+<p>Integer data types are for storing whole numbers. There are signed and unsigned variants of these, where the allocated size is the same but the range oof possible values is changed.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Variable Name</th>
+<th align="left">C Identifier</th>
+<th align="left">Size</th>
+<th align="left">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Character</td>
+<td align="left">char</td>
+<td align="left">8 bit</td>
+<td align="left">0 - 255</td>
+</tr>
+<tr class="even">
+<td align="left">Integer</td>
+<td align="left">int</td>
+<td align="left">16 bit</td>
+<td align="left">pm 32,000</td>
+</tr>
+<tr class="odd">
+<td align="left">Short</td>
+<td align="left">short</td>
+<td align="left">16 bit</td>
+<td align="left">pm 32,000</td>
+</tr>
+<tr class="even">
+<td align="left">Long</td>
+<td align="left">long</td>
+<td align="left">32 bit</td>
+<td align="left">pm 2 billion</td>
+</tr>
+</tbody>
+</table>
+<h4 id="floating-point-types">Floating Point Types</h4>
+<p>Floating point data types allow increasing levels of presicsion for calculations by providing more and more decimal places. For most engineering applications 15 decimal places will usually suffice.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Variable Name</th>
+<th align="left">C Identifier</th>
+<th align="left">Size</th>
+<th align="left">Precision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Float</td>
+<td align="left">float</td>
+<td align="left">32 bit</td>
+<td align="left">6 decimal places</td>
+</tr>
+<tr class="even">
+<td align="left">Double</td>
+<td align="left">double</td>
+<td align="left">64 bit</td>
+<td align="left">15 decimal places</td>
+</tr>
+<tr class="odd">
+<td align="left">Long</td>
+<td align="left">long</td>
+<td align="left">80 bit</td>
+<td align="left">19 decimal places</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<h3 id="working-with-strings">Working with Strings</h3>
+<p>Unlike other (primative) variable types, strings are instantiated using <code>String</code> with a capital S. This is because a string is actually an array of <code>chars</code> - in other words a collection of characters.</p>
+<h4 id="string-terminator">String Terminator</h4>
+<p>When you go to run your code the C compiler needs to know where every string ends, or terminates. To do this, the compiler parses your program and everywhere it finds closing quotation marks it insterts a character known as the <strong>string terminator</strong>. The string terminator is simply <code>\0</code> and takes up one additional byte of memory. This means that if you create a String variable to store your name, and if your name is 8 characters long, the name variable will actually take up 9 bytes of memory.</p>
+<h4 id="overwriting-strings">Overwriting Strings</h4>
+<p>To overwrite an existing string use the <code>strcpy()</code> function. This function takes two <strong>arguments</strong> or parameters. Remember, the <code>strcpy()</code> function can be used to overwrite <em>any</em> string, so the first thing you need to tell is is what string to replace, then you need to tell it what to replace it with.</p>
+<p></p>
+<h3 id="arrays.">Arrays.</h3>
+<p>Let's explore arrays in a bit more detail. As mentioned already, an array is simply a collection of data. The only syntactic difference between a primative data type and an array is an extra set of square brackets e.g.<code>int integerArray[];</code> Each new element of an array is seperated by a comma. For example, you might use an array to store your lotto numbers: <code>int luckyNums[] = [4,8,15,16,23,42];</code></p>
+<h4 id="indexing">Indexing</h4>
+<p>What is we want to know,for example, what the third element of an array is? Well, we can look it up using it's <strong>index</strong>. Just like with a book, an index is used to look up information you want to find. Now intuitively you might think that the third element of an array would be found at index 3 - however C, like that vast majority of programming languages, start indexing arrays at 0. This means the the first elements is at index 0, the second is at index 1 and so on. So to print our third lottery number to the console we could write:</p>
+<pre class="sourceCode c"><code class="sourceCode c">  printf(<span class="st">&quot;%d&quot;</span>, luckyNums[i]);</code></pre>
+<p></p>
+<h3 id="preprocessor-directives">Preprocessor Directives</h3>
+<p>Up until now we haven't really paid any great attention to the <code>#include</code> code at the beginning of our programs. The <code>.h</code> files that are included are known as header files or preprocessor directives. This is because the contents of these files are called <em>before</em> the main.c is compiled.</p>
+<h4 id="writing-a-simple-header.">Writing a simple header.</h4>
+<p>Lets create a header with some commonly used mathematical constants</p>
+<pre class="sourceCode c"><code class="sourceCode c"> DEFINE PI = <span class="fl">3.141593</span>
+ DEFINE EULER = <span class="fl">1.6</span></code></pre>
+<p>If you're using an IDE you'll see that this new .h file is saved in a new folder called &quot;headers&quot;. Typically your compiler will expect your headers to be in a predefined location ------ and this is implied in the code by using brackets <code>#include &lt;someHeader.h&gt;</code> however, our hearder is stored in the same directory as our source code so acccess it we use quotation marks instead: <code>#include &quot;myHeader.h&quot;</code></p>
+<p></p>
+</div>
+<div id="input" class="slide section level2">
+<h1>Input!!</h1>
+<!-- number 5 is alive?
+ -->
+<p>So far we've been manipulating predefined data - this is all well and good but it doesn't make for particularly interactive programs. In this section we will look at the <code>scanf()</code> function, which is used for reading (or scanning!) in data from the console.</p>
+<h3 id="scanf-syntax">scanf() syntax</h3>
+<p>Both <code>scanf()</code> and <code>printf()</code> are part of the <code>&lt;stdio.h&gt;</code> header, so hopefully they will look quite similar to you. As we saw before, when printing data we needed to tell the function both the <strong>type</strong> of data we are working with and a <strong>value</strong> for that data to have. Take a look at the following simple example:</p>
+<pre class="sourceCode c"><code class="sourceCode c"> <span class="dt">int</span> myInt;
+
+ scanf(<span class="st">&quot;%d&quot;</span>, myInt);</code></pre>
+<p>If you build and run the previous example you will just see a console with a blinking cursor - not particularly intuitive for the end user.</p>
+<pre class="sourceCode c"><code class="sourceCode c"> <span class="dt">int</span> age;
+
+ printf(<span class="st">&quot;What year were you born in ? </span><span class="ch">\n</span><span class="st">&quot;</span>);
+ scanf(<span class="st">&quot;%d&quot;</span>, age);</code></pre>
+<p></p>
+<h4 id="challenge">Challenge</h4>
+<p>Improve the snippet above so that it asks the user for their year of birth and then returns their (approximate) age to them.</p>
+<p><strong>stretch goal</strong> use system time and users D.o.B to get exact age, or to create a birthday countdown.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+car bv = {"Bugatti", "Veyron", 1000, 407, 1};
+car vg = {"Volkeswagen", "Golf", 500, 105, 2};

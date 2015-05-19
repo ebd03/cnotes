@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1428778039 source:/Users/Eoghan/Temp/sum_of_series_EoghanByrne/main.c
+	<stdlib.h>
+	<stdio.h>
+

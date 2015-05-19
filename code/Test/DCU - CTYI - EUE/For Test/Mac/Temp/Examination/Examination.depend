@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1429473180 source:/Users/Eoghan/Temp/Examination/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

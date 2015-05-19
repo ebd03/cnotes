@@ -1,0 +1,11 @@
+dog Dalmation 3 TravelCage 150
+mouse Black 4 MouseCage 58
+dog Retriever 9 DogBed 55
+dog Wolf 7 DogBed 180
+cat Persian 3 TravelCage 150
+cat Munchkin 8 CatCage 115
+cat Manx 3 TravelCage 150
+rabbit Angora 2 RabbitCage 145
+rabbit Alaska 2 RabbitCage 127
+dog Terrier 9 TravelCage 200
+fish Gold 4 FishBowl 60

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1428776804 source:/Users/Eoghan/Temp/forex_EoghanByrne/main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

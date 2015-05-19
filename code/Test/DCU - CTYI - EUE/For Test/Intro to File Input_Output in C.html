@@ -1,0 +1,471 @@
+
+<!-- saved from url=(0047)https://www.cs.bu.edu/teaching/c/file-io/intro/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Intro to File Input/Output in C</title>
+</head>
+
+<body>
+<h1 align="center">Intro to File Input/Output in C</h1>
+<hr>
+
+<p>
+</p><ol>
+
+<li>
+<b>Redirection:</b><p>
+
+One way to get input into a program or to display output from a program
+is to use <em>standard input</em> and <em>standard output</em>,
+respectively.  All that means is that to read in data, we use
+<code>scanf()</code> (or a few other functions) and to write out data,
+we use <code>printf()</code>.
+
+</p><p>
+When we need to take input from a file (instead of having the user type
+data at the keyboard) we can use input redirection:
+
+</p><blockquote><pre>% <b>a.out &lt; inputfile</b>
+</pre></blockquote>
+
+<p>
+This allows us to use the same <code>scanf()</code> calls we use to
+read from the keyboard.  With input redirection, the operating system
+causes input to come from the file (e.g., <code>inputfile</code> above)
+instead of the keyboard.
+
+</p><p>
+Similarly, there is <em>output redirection</em>:
+
+</p><blockquote><pre>% <b>a.out &gt; outputfile</b>
+</pre></blockquote>
+
+<p>
+that allows us to use <code>printf()</code> as before, but that causes
+the output of the program to go to a file (e.g., <code>outputfile</code>
+above) instead of the screen.
+
+</p><p>
+Of course, the 2 types of redirection can be used at the same time...
+
+</p><blockquote><pre>% <b>a.out &lt; inputfile &gt; outputfile</b>
+</pre></blockquote>
+
+<p>
+</p></li><li>
+<b>C File I/O:</b><p>
+
+While redirection is very useful, it is really part of the operating
+system (not C).  In fact, C has a general mechanism for reading and
+writing files, which is more flexible than redirection alone.
+
+</p><h3>stdio.h</h3>
+
+There are types and functions in the library <b>stdio.h</b> that are
+used for file I/O.  Make sure you always include that header when you
+use files.
+
+<h4>Type</h4>
+
+For files you want to read or write, you need a file pointer, e.g.:
+
+<blockquote><pre>FILE *fp;
+</pre></blockquote>
+
+<p>
+What is this type "<code>FILE *</code>"?  Realistically, you don't need
+to know.  Just think of it as some abstract data structure, whose
+details are hidden from you.  In other words, the only way you can use
+a <code>FILE *</code> is via the functions that C gives you.
+
+</p><p>
+</p><hr align="left" width="20%">
+<b>Note:</b>
+In reality, <code>FILE</code> is some kind of structure that holds
+information about the file.  We must use a <code>FILE *</code> because
+certain functions will need to change that information, i.e., we need
+to pass the information around <em>by reference</em>.
+<hr align="left" width="20%">
+
+<h4>Functions</h4>
+
+Reading from or writing to a file in C requires 3 basic steps:
+
+<p>
+</p><ol>
+<li>Open the file.
+</li><li>Do all the reading or writing.
+</li><li>Close the file.
+</li></ol>
+
+<p>
+Following are described the functions needed to accomplish each step.
+
+</p><p>
+A complete program that includes the example described below, plus an
+input file to use with that program, is available to <a href="https://www.cs.bu.edu/teaching/c/file-io/intro/download/">download</a>.
+
+</p><p>
+</p></li><li><b>Opening a file:</b><p>
+
+In order to open a file, use the function <code>fopen()</code>.
+Use it as:
+
+</p><blockquote><pre>fp = fopen(<em>filename</em>, <em>mode</em>);
+</pre></blockquote>
+
+<p>
+where:
+
+</p><p>
+</p><ul>
+<li><em>filename</em> is a string that holds the name of the file on disk
+(including a <em>path</em> like <code>/cs/course</code> if necessary).
+
+<p>
+</p></li><li><em>mode</em> is a string representing how you want to open the
+file.  Most often you'll open a file for reading (<code>"r"</code>) or
+writing (<code>"w"</code>).
+</li></ul>
+
+<p>
+Note that <code>fopen()</code> returns a <code>FILE *</code> that can
+then be used to access the file.  When the file cannot be opened (e.g.,
+we don't have permission or it doesn't exist when opening for reading),
+<code>fopen()</code> will return <code>NULL</code>.
+
+</p><p>
+Here are examples of opening files:
+
+<a name="fileio1"></a>
+</p><blockquote><pre>FILE *ifp, *ofp;
+char *mode = "r";
+char outputFilename[] = "out.list";
+
+ifp = fopen("in.list", mode);
+
+if (ifp == NULL) {
+  fprintf(stderr, "Can't open input file in.list!\n");
+  exit(1);
+}
+
+ofp = fopen(outputFilename, "w");
+
+if (ofp == NULL) {
+  fprintf(stderr, "Can't open output file %s!\n",
+          outputFilename);
+  exit(1);
+}
+</pre></blockquote>
+
+<p>
+Note that the input file that we are opening for reading
+(<code>"r"</code>) must already exist.  In contrast, the output file we
+are opening for writing (<code>"w"</code>) does not have to exist.  If
+it doesn't, it will be created.  If this output file does already
+exist, its previous contents will be thrown away (and will be lost).
+
+</p><p>
+</p><hr align="left" width="20%">
+<b>Note:</b>
+There are other modes you can use when opening a file, such as append
+(<code>"a"</code>) to append something to the end of a file without
+losing its contents...or modes that allow you to both read and write.
+You can look up these other modes in a good C reference on
+<code>stdio.h</code>.
+<hr align="left" width="20%">
+
+<p>
+</p></li><li><b>Reading from or writing to a file:</b><p>
+
+Once a file has been successfully opened, you can read from it using
+<code>fscanf()</code> or write to it using <code>fprintf()</code>.  These
+functions work just like <code>scanf()</code> and <code>printf()</code>,
+except they require an extra first parameter, a <code>FILE *</code> for
+the file to be read/written.
+
+</p><p>
+</p><hr align="left" width="20%">
+<b>Note:</b>
+There are other functions in <b>stdio.h</b> that can be used to read or
+write files.  Look them up in a good C reference.
+<hr align="left" width="20%">
+
+<p>
+Continuing our example from above, suppose the input file consists of
+lines with a <em>username</em> and an <em>integer test score</em>, e.g.:
+
+</p><blockquote><pre>in.list
+------
+foo 70
+bar 98
+...
+</pre></blockquote>
+
+and that each username is no more than 8 characters long.
+
+<p>
+We might use the files we opened <a href="https://www.cs.bu.edu/teaching/c/file-io/intro/#fileio1">above</a> by
+copying each username and score from the input file to the output
+file.  In the process, we'll increase each score by <nobr>10
+points</nobr> for the output file:
+
+</p><blockquote><pre>char username[9];  /* One extra for nul char. */
+int score;
+
+<b>...</b>
+
+while (fscanf(ifp, "%s %d", username, &amp;score) != EOF) {
+  fprintf(ofp, "%s %d\n", username, score+10);
+}
+
+<b>...</b>
+</pre></blockquote>
+
+<p>
+The function <code>fscanf()</code>, like <code>scanf()</code>, normally
+returns the number of values it was able to read in.  However, when it
+hits the end of the file, it returns the special value <code>EOF</code>.
+So, testing the return value against <code>EOF</code> is one way to stop
+the loop.
+
+</p><p>
+The bad thing about testing against <code>EOF</code> is that if the
+file is not in the right format (e.g., a letter is found when a number
+is expected):
+
+</p><blockquote><pre>in.list
+------
+foo 70
+bar 98
+biz A+
+...
+</pre></blockquote>
+
+<p>
+then <code>fscanf()</code> will not be able to read that line (since
+there is no integer to read) and it won't advance to the next line in
+the file.  For this error, <code>fscanf()</code> will not return
+<code>EOF</code> (it's not at the end of the file)....
+
+</p><p>
+Errors like that will at least mess up how the rest of the file is
+read.  In some cases, they will cause an <em>infinite loop</em>.
+
+</p><p>
+One solution is to test against the number of values we expect to be
+read by <code>fscanf()</code> each time.  Since our format is
+<nobr><code>"%s %d"</code></nobr>, we expect it to read in 2 values,
+so our condition could be:
+
+</p><blockquote><pre>while (fscanf(ifp, "%s %d", username, &amp;score) <font color="#ee0000">== 2</font>) {
+  <b>...</b>
+</pre></blockquote>
+
+<p>
+Now, if we get 2 values, the loop continues.  If we don't get 2 values,
+either because we are at the end of the file or some other problem
+occurred (e.g., it sees a letter when it is trying to read in a number
+with <code>%d</code>), then the loop will end.
+
+</p><p>
+Another way to test for end of file is with the library function
+<code>feof()</code>.  It just takes a file pointer and returns a
+true/false value based on whether we are at the end of the file.
+
+</p><p>
+To use it in the above example, you would do:
+
+</p><blockquote><pre>while (<font color="#ee0000">!feof(ifp)</font>) {
+  if (fscanf(ifp, "%s %d", username, &amp;score) <font color="#ee0000">!= 2</font>)
+    break;
+  fprintf(ofp, "%s %d", username, score+10);
+}
+</pre></blockquote>
+
+<p>
+Note that, like testing <code>!= EOF</code>, it might cause an infinite
+loop if the format of the input file was not as expected.  However, we
+can add code to make sure it reads in 2 values (as we've done above).
+
+</p><p>
+</p><hr align="left" width="20%">
+<b>Note:</b>
+When you use <code>fscanf(...) != EOF</code> or <code>feof(...)</code>,
+they will not detect the end of the file until they try to read past
+it.  In other words, they won't report end-of-file on the last valid
+read, only on the one after it.
+<hr align="left" width="20%">
+
+<p>
+</p></li><li><b>Closing a file:</b><p>
+
+When done with a file, it must be closed using the function
+<code>fclose()</code>.
+
+</p><p>
+To finish our example, we'd want to close our input and output files:
+
+</p><blockquote><pre>fclose(ifp);
+fclose(ofp);
+</pre></blockquote>
+
+<p>
+Closing a file is very important, especially with output files.  The
+reason is that output is often <em>buffered</em>.  This means that when
+you tell C to write something out, e.g.,
+
+</p><blockquote><pre>fprintf(ofp, "Whatever!\n");
+</pre></blockquote>
+
+<p>
+it doesn't necessary get written to disk right away, but may end up in
+a <em>buffer</em> in memory.  This output buffer would hold the text
+temporarily:
+
+</p><blockquote><pre>Sample output buffer:
+----------------------------------------------
+| a | b  | c <font color="#ee0000">| W | h | a | t | e | v | e | r |</font>
+----------------------------------------------
+<font color="#ee0000">| ! | \n |</font>   |   |   |   |   |   |   |   |   |
+----------------------------------------------
+|   |    |   |   |   |   |   |   |   |   |   |
+----------------------------------------------
+|   |    |   |   |   |   |   |   |   |   |   |
+----------------------------------------------
+<b>...</b>
+</pre></blockquote>
+
+<p>
+(The buffer is really just 1-dimensional despite this drawing.)
+
+</p><p>
+When the buffer fills up (or when the file is <em>closed</em>), the
+data is finally written to disk.
+
+</p><p>
+So, if you forget to close an output file then whatever is still
+in the buffer may not be written out.
+
+</p><p>
+</p><hr align="left" width="20%">
+<b>Note:</b>
+There are other kinds of buffering than the one we describe here.
+<hr align="left" width="20%">
+
+<p>
+</p></li><li>
+<b>Special file pointers:</b><p>
+
+There are 3 special <code>FILE *</code>'s that are always defined for
+a program.  They are <code>stdin</code> (<em>standard input</em>),
+<code>stdout</code> (<em>standard output</em>) and <code>stderr</code>
+(<em>standard error</em>).
+
+</p><h3>Standard Input</h3>
+
+<p>
+<em>Standard input</em> is where things come from when you use
+<code>scanf()</code>.  In other words,
+
+</p><blockquote><pre>scanf("%d", &amp;val);
+</pre></blockquote>
+
+<p>
+is equivalent to the following <code>fscanf()</code>:
+
+</p><blockquote><pre>fscanf(stdin, "%d", &amp;val);
+</pre></blockquote>
+
+<h3>Standard Output</h3>
+
+<p>
+Similarly, <em>standard output</em> is exactly where things go when you
+use <code>printf()</code>.  In other words,
+
+</p><blockquote><pre>printf("Value = %d\n", val):
+</pre></blockquote>
+
+<p>
+is equivalent to the following <code>fprintf()</code>:
+
+</p><blockquote><pre>fprintf(stdout, "Value = %d\n", val):
+</pre></blockquote>
+
+<p>
+Remember that standard input is normally associated with the keyboard
+and standard output with the screen, unless <em>redirection</em> is
+used.
+
+</p><h3>Standard Error</h3>
+
+<em>Standard error</em> is where you should display error messages.
+We've already done that above:
+
+<blockquote><pre>fprintf(stderr, "Can't open input file in.list!\n");
+</pre></blockquote>
+
+<p>
+Standard error is normally associated with the same place as standard
+output; however, redirecting standard output does not redirect standard
+error.
+
+</p><p>
+For example,
+
+</p><blockquote><pre>% <b>a.out &gt; outfile</b>
+</pre></blockquote>
+
+<p>
+only redirects stuff going to standard output to the file <b>outfile</b>...
+anything written to standard error goes to the screen.
+
+</p><p>
+</p><h3>Using the Special File Pointers</h3>
+
+We've already seen that <em>stderr</em> is useful for printing error
+messages, but you may be asking, "When would I ever use the special file
+pointers <em>stdin</em> and <em>stdout</em>?"  Well, suppose you create
+a function that writes a bunch of data to an opened file that is specified
+as a parameter:
+
+<blockquote><pre>void WriteData(FILE *fp)
+{
+  fprintf(fp, "data1\n");
+  fprintf(fp, "data2\n");
+  ...
+}
+</pre></blockquote>
+
+<p>
+Certainly, you can use it to write the data to an output file (like
+the one above):
+
+</p><blockquote><pre>WriteData(ofp);
+</pre></blockquote>
+
+<p>
+But, you can also write the data to standard output:
+
+</p><blockquote><pre>WriteData(stdout);
+</pre></blockquote>
+
+<p>
+Without the special file pointer <em>stdout</em>, you'd have to write a
+second version of <code>WriteData()</code> that wrote stuff to standard
+output.
+
+</p></li></ol>
+
+<p>
+</p><hr>
+<address>
+BU CAS CS - Intro to File Input/Output in C
+<br>
+Copyright © 1993-2000 by
+<a target="_top">Robert I. Pitts</a>
+&lt;rip at bu dot edu&gt;.
+All Rights Reserved.
+</address>
+
+
+</body></html>

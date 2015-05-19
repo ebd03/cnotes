@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1425935033 source:/Users/Eoghan/Temp/FIZZ-BUZZ/main.c
+	<stdlib.h>
+	<stdio.h>
+

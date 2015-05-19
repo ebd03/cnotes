@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1425380459 source:/Users/Eoghan/Temp/MillionDollar/main.c
+	<stdio.h>
+	<stdlib.h>
+

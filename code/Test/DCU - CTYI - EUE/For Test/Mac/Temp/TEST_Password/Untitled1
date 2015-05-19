@@ -1,0 +1,33 @@
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+
+    string password = "123";
+    string passwordEntry;
+    int attempts = 1;
+
+    cout << "Please enter your password: ";
+    getline(cin, passwordEntry, '\n');
+
+    while ( passwordEntry != password && attempts <=2 )
+    {
+        cout << "Please try again: ";
+        getline(cin, passwordEntry, '\n');
+        attempts++;
+    }
+
+    if ( passwordEntry == password && attempts <=3 )
+    {
+        cout << "Access granted";
+    }
+    else
+    {
+        cout << "Sorry, only allowed 3 attempts";
+    }
+
+}

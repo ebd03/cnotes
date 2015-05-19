@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1428774097 source:/Users/Eoghan/Temp/temp_converter_EoghanByrne/main.c
+	<stdio.h>
+	<stdlib.h>
+

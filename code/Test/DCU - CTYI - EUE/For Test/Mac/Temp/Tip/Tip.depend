@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1424642941 source:/Users/Eoghan/Temp/Tip/main.c
+	<stdlib.h>
+	<math.h>
+
